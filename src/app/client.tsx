@@ -1,0 +1,251 @@
+"use client";
+
+import { Product } from "@/types";
+import { ProductCard } from "@/components/ProductCard";
+import { Navbar } from "@/components/Navbar";
+import { InfoBanner } from "@/components/InfoBanner";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Footer } from "@/components/Footer";
+import { useEffect, useState } from "react";
+import { CategoryNav } from "@/components/CategoryNav";
+import { siteConfig } from "@/config/site";
+import { BadgeCheck, Maximize, Package, Truck, ShieldCheck, RotateCcw, ShoppingBag, Sparkles, Gift } from 'lucide-react';
+
+export function HomeClient({ topSellers, allProducts }: { topSellers: Product[]; allProducts: Product[] }) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+
+  // Auto-scroll carousel
+  useEffect(() => {
+    if (isHovering) return;
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % Math.ceil(topSellers.length / 4));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [topSellers.length, isHovering]);
+
+  // Get all categories from allProducts for navigation
+  const categories = Array.from(
+    new Set(allProducts.map((product) => product.category))
+  ).sort((a, b) => a.localeCompare(b));
+
+  // Count products per category for featured cards
+  const categoryCounts: Record<string, number> = {};
+  allProducts.forEach((product) => {
+    categoryCounts[product.category] = (categoryCounts[product.category] || 0) + 1;
+  });
+  const featuredCategories = Object.entries(categoryCounts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([category]) => category)
+    .slice(0, 4);
+
+  const featureIcons: Record<string, React.ReactNode> = {
+    "BadgeCheck": <BadgeCheck className="w-7 h-7 text-main" />,
+    "Maximize": <Maximize className="w-7 h-7 text-main" />,
+    "Package": <Package className="w-7 h-7 text-main" />,
+    "Truck": <Truck className="w-7 h-7 text-main" />,
+    "ShieldCheck": <ShieldCheck className="w-7 h-7 text-main" />,
+    "RotateCcw": <RotateCcw className="w-7 h-7 text-main" />,
+  };
+
+  return (
+    <div className="min-h-screen bg-main-light flex flex-col">
+      <Navbar />
+      <InfoBanner />
+      <CategoryNav categories={categories} isHomePage={true} />
+
+      {/* Hero Section */}
+      <div className="w-full bg-gradient-to-b from-white to-main-light">
+        <div className="container mx-auto px-4 py-16 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-main mb-4">
+            Book-Inspired Wall Art
+          </h1>
+          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+            Beautiful prints for readers, dreamers, and shelf-decorators. Find the perfect piece for your reading nook.
+          </p>
+          <div className="flex gap-4 justify-center">
+            <Link href="/shop">
+              <Button size="lg" className="bg-main text-white font-semibold hover:bg-main-hover transition-colors">
+                Shop Prints
+              </Button>
+            </Link>
+            <Link href="/collections">
+              <Button size="lg" variant="outline" className="border-main text-main hover:bg-main/10">
+                Browse Collections
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Three Feature Cards */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <Link href="/shop?filter=best-sellers" className="group">
+            <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 text-center group-hover:scale-[1.02]">
+              <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center mx-auto mb-3">
+                <Sparkles className="w-6 h-6 text-main" />
+              </div>
+              <h3 className="font-semibold text-main text-lg mb-1">Best Sellers</h3>
+              <p className="text-gray-600 text-sm">Our most-loved prints</p>
+            </div>
+          </Link>
+          <Link href="/collections" className="group">
+            <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 text-center group-hover:scale-[1.02]">
+              <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center mx-auto mb-3">
+                <ShoppingBag className="w-6 h-6 text-main" />
+              </div>
+              <h3 className="font-semibold text-main text-lg mb-1">Shop by Vibe</h3>
+              <p className="text-gray-600 text-sm">Browse by collection</p>
+            </div>
+          </Link>
+          <Link href="/shop" className="group">
+            <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 text-center group-hover:scale-[1.02]">
+              <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center mx-auto mb-3">
+                <Gift className="w-6 h-6 text-main" />
+              </div>
+              <h3 className="font-semibold text-main text-lg mb-1">Gifts for Readers</h3>
+              <p className="text-gray-600 text-sm">Perfect presents for book lovers</p>
+            </div>
+          </Link>
+        </div>
+      </div>
+
+      {/* Best Sellers Section */}
+      <div className="w-full bg-gradient-to-b from-main-light to-white">
+        <section className="container mx-auto px-4 py-12">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-main mb-4">
+              Best Sellers
+            </h2>
+          </div>
+          <div
+            className="relative overflow-hidden w-full"
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+          >
+            <div
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+            >
+              {Array.from({ length: Math.ceil(topSellers.length / 4) }).map((_, pageIndex) => (
+                <div key={pageIndex} className="flex gap-8 min-w-full justify-evenly px-4">
+                  {topSellers.slice(pageIndex * 4, (pageIndex + 1) * 4).map((product: Product) => (
+                    <div key={product.id} className="w-[300px]">
+                      <ProductCard product={product} />
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+            {/* Carousel Navigation Dots */}
+            <div className="flex justify-center gap-2 mt-8">
+              {Array.from({ length: Math.ceil(topSellers.length / 4) }).map((_, index) => (
+                <button
+                  key={index}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    currentSlide === index ? 'bg-main w-4' : 'bg-main/30'
+                  }`}
+                  onClick={() => setCurrentSlide(index)}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* Why Choose Our Prints - Bento Grid */}
+      <div className="py-12 mb-4">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-main mb-4">
+              Why Choose Our Prints?
+            </h2>
+            <p className="text-lg text-gray-700 max-w-2xl mx-auto">Quality, care, and attention to detail in every order.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-3 gap-6 max-w-6xl mx-auto">
+            {/* Large CTA Card */}
+            <div className="relative col-span-2 row-span-3 rounded-2xl overflow-hidden flex flex-col items-center justify-center bg-main text-white p-8 transition-transform duration-300 group hover:scale-[1.02] hover:shadow-2xl">
+              <h2 className="text-3xl font-bold mb-4 text-center">Shop Our Prints</h2>
+              <p className="text-lg text-white/90 mb-6 text-center max-w-sm">
+                Discover book-inspired wall art designed for readers, dreamers, and shelf-decorators.
+              </p>
+              <div className="flex gap-3">
+                <Link href="/shop">
+                  <Button size="lg" className="bg-white text-main font-semibold hover:bg-main-light transition-colors">
+                    Shop Now
+                  </Button>
+                </Link>
+                <Link href="/collections">
+                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 transition-colors">
+                    Collections
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            {/* Feature cards from siteConfig */}
+            {siteConfig.features.slice(0, 2).map((feature) => (
+              <div key={feature.title} className={`flex flex-col items-center justify-center bg-white rounded-2xl shadow p-6 ${feature === siteConfig.features[0] ? 'row-span-2' : ''} group hover:scale-105 hover:shadow-xl transition-transform duration-300`}>
+                <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center mb-3">
+                  {featureIcons[feature.icon]}
+                </div>
+                <span className="font-semibold text-main text-lg mb-1">{feature.title}</span>
+                <p className="text-gray-600 text-sm text-center">{feature.description}</p>
+              </div>
+            ))}
+            {siteConfig.features.slice(2, 4).map((feature) => (
+              <div key={feature.title} className={`flex flex-col items-center justify-center bg-white rounded-2xl shadow p-6 ${feature === siteConfig.features[3] ? 'col-span-2' : ''} group hover:scale-105 hover:shadow-xl transition-transform duration-300`}>
+                <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center mb-3">
+                  {featureIcons[feature.icon]}
+                </div>
+                <span className="font-semibold text-main text-lg mb-1">{feature.title}</span>
+                <p className="text-gray-600 text-sm text-center">{feature.description}</p>
+              </div>
+            ))}
+            {siteConfig.features.slice(4).map((feature) => (
+              <div key={feature.title} className="flex flex-col items-center justify-center bg-white rounded-2xl shadow p-6 group hover:scale-105 hover:shadow-xl transition-transform duration-300">
+                <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center mb-3">
+                  {featureIcons[feature.icon]}
+                </div>
+                <span className="font-semibold text-main text-lg mb-1">{feature.title}</span>
+                <p className="text-gray-600 text-sm text-center">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Browse Collections */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-main mb-4">
+            Browse Collections
+          </h2>
+          <p className="text-lg text-gray-700 max-w-2xl mx-auto">Explore our curated collections of book-inspired prints.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {featuredCategories.map((category) => (
+            <Link
+              key={category}
+              href={`/collections/${encodeURIComponent(category.toLowerCase().replace(/\s+/g, '-'))}`}
+              className="group"
+            >
+              <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 text-center group-hover:scale-[1.02]">
+                <h3 className="text-xl font-bold text-main mb-2">{category}</h3>
+                <p className="text-gray-600 text-sm">
+                  {categoryCounts[category]} {categoryCounts[category] === 1 ? 'print' : 'prints'}
+                </p>
+                <span className="inline-block mt-3 text-main text-sm font-medium group-hover:underline">
+                  View Collection
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <Footer />
+    </div>
+  );
+}

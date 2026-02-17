@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --main-color: 183 46% 25%; /* Teal color in HSL format */
+    --main-color-light: 180 19% 93%;
+    --main-color-dark: 183 46% 16%;
+    --main-color-hover: 183 46% 20%;
+    
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: var(--main-color);
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: var(--main-color-light);
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: var(--main-color);
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    --background: 200 20% 6%;
+    --foreground: 180 10% 95%;
+    --card: 200 20% 6%;
+    --card-foreground: 180 10% 95%;
+    --popover: 200 20% 6%;
+    --popover-foreground: 180 10% 95%;
+    --primary: 180 19% 93%;
+    --primary-foreground: 183 46% 16%;
+    --secondary: 190 20% 15%;
+    --secondary-foreground: 180 10% 95%;
+    --muted: 190 20% 15%;
+    --muted-foreground: 180 10% 60%;
+    --accent: 190 20% 15%;
+    --accent-foreground: 180 10% 95%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 180 10% 95%;
+    --border: 190 20% 15%;
+    --input: 190 20% 15%;
+    --ring: 183 46% 40%;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
