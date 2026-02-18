@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 const faqs = [
   {
     question: "What sizes do your prints come in?",
-    answer: "Our prints are available in A5, A4, and A3. Check the product page for available sizes for each design.",
+    answer: "A5 (14.8\u00d721 cm), A4 (21\u00d729.7 cm), A3 (29.7\u00d742 cm), A2 (42\u00d759.4 cm), A1 (59.4\u00d784.1 cm), 8\u00d710\u201d (20\u00d725 cm), 11\u00d714\u201d (27\u00d735 cm), 11\u00d717\u201d (28\u00d743 cm), 12\u00d718\u201d (30\u00d745 cm), 16\u00d720\u201d (40\u00d750 cm), 16\u00d724\u201d (40\u00d760 cm), 18\u00d724\u201d (45\u00d760 cm), and 24\u00d736\u201d (60\u00d790 cm).\n\nAvailable sizes can vary by design \u2014 please check the size dropdown on the product page for the options for that print.",
   },
   {
     question: "What paper do you print on?",
@@ -21,11 +22,11 @@ const faqs = [
   },
   {
     question: "Do you ship internationally?",
-    answer: "Currently we only ship within the United Kingdom. We hope to offer international shipping in the future.",
+    answer: "Shipping Available worldwide. Printed locally from hubs in the UK, USA, Germany, France, Spain, Australia, and EU regions.",
   },
   {
     question: "Can I return a print?",
-    answer: "Yes! We offer hassle-free returns within 30 days of receipt. The print must be unused and in its original packaging. See our Shipping & Returns page for full details.",
+    answer: null,
   },
   {
     question: "Are frames included?",
@@ -56,7 +57,21 @@ export default function FAQPage() {
           {faqs.map((faq, index) => (
             <div key={index} className="bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-sm">
               <h2 className="text-lg font-semibold text-main mb-2">{faq.question}</h2>
-              <p className="text-gray-600">{faq.answer}</p>
+              {faq.answer ? (
+                <div className="text-gray-600 space-y-3">
+                  {faq.answer.split("\n").filter(p => p.trim()).map((paragraph, pIndex) => (
+                    <p key={pIndex}>{paragraph}</p>
+                  ))}
+                </div>
+              ) : faq.question === "Can I return a print?" ? (
+                <p className="text-gray-600">
+                  Yes! We offer hassle-free returns within 30 days of receipt. The print must be unused and in its original packaging. See our{" "}
+                  <Link href="/shipping" className="text-main underline hover:text-main-dark">
+                    Shipping &amp; Returns
+                  </Link>{" "}
+                  page for full details.
+                </p>
+              ) : null}
             </div>
           ))}
         </div>

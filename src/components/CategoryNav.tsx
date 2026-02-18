@@ -48,7 +48,7 @@ export function CategoryNav({ categories, isHomePage = false }: CategoryNavProps
   return (
     <div className="bg-white border-b">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-center h-16 overflow-x-auto">
+        <div className="flex flex-wrap items-center justify-center gap-y-2 py-3 md:h-16">
           <Button
             key="best-sellers"
             variant={selectedCategory === "best-sellers" ? "default" : "ghost"}

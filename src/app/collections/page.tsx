@@ -37,7 +37,7 @@ export default async function CollectionsPage() {
               href={`/collections/${encodeURIComponent(collection.name.toLowerCase().replace(/\s+/g, '-'))}`}
               className="group"
             >
-              <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 group-hover:scale-[1.02]">
+              <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 group-hover:scale-[1.02] h-full">
                 <h2 className="text-xl font-bold text-main mb-2">{collection.name}</h2>
                 <p className="text-gray-600">{collection.count} {collection.count === 1 ? 'print' : 'prints'}</p>
               </div>

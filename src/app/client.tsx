@@ -7,23 +7,48 @@ import { InfoBanner } from "@/components/InfoBanner";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/Footer";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { CategoryNav } from "@/components/CategoryNav";
 import { siteConfig } from "@/config/site";
-import { BadgeCheck, Maximize, Package, Truck, ShieldCheck, RotateCcw, ShoppingBag, Sparkles, Gift } from 'lucide-react';
+import { BadgeCheck, Maximize, Package, Truck, ShoppingBag, Sparkles, Gift, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export function HomeClient({ topSellers, allProducts }: { topSellers: Product[]; allProducts: Product[] }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile for carousel
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const itemsPerSlide = isMobile ? 1 : 4;
+  const totalSlides = Math.ceil(topSellers.length / itemsPerSlide);
 
   // Auto-scroll carousel
   useEffect(() => {
     if (isHovering) return;
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % Math.ceil(topSellers.length / 4));
+      setCurrentSlide((prev) => (prev + 1) % totalSlides);
     }, 5000);
     return () => clearInterval(interval);
-  }, [topSellers.length, isHovering]);
+  }, [totalSlides, isHovering]);
+
+  // Reset slide when switching between mobile/desktop
+  useEffect(() => {
+    setCurrentSlide(0);
+  }, [isMobile]);
+
+  const goToPrev = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+  }, [totalSlides]);
+
+  const goToNext = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % totalSlides);
+  }, [totalSlides]);
 
   // Get all categories from allProducts for navigation
   const categories = Array.from(
@@ -45,8 +70,6 @@ export function HomeClient({ topSellers, allProducts }: { topSellers: Product[];
     "Maximize": <Maximize className="w-7 h-7 text-main" />,
     "Package": <Package className="w-7 h-7 text-main" />,
     "Truck": <Truck className="w-7 h-7 text-main" />,
-    "ShieldCheck": <ShieldCheck className="w-7 h-7 text-main" />,
-    "RotateCcw": <RotateCcw className="w-7 h-7 text-main" />,
   };
 
   return (
@@ -66,12 +89,12 @@ export function HomeClient({ topSellers, allProducts }: { topSellers: Product[];
           </p>
           <div className="flex gap-4 justify-center">
             <Link href="/shop">
-              <Button size="lg" className="bg-main text-white font-semibold hover:bg-main-hover transition-colors">
+              <Button size="lg" className="bg-main text-white font-semibold hover:bg-main-hover transition-colors min-w-[200px]">
                 Shop Prints
               </Button>
             </Link>
             <Link href="/collections">
-              <Button size="lg" variant="outline" className="border-main text-main hover:bg-main/10">
+              <Button size="lg" variant="outline" className="border-main text-main hover:bg-main/10 min-w-[200px]">
                 Browse Collections
               </Button>
             </Link>
@@ -79,7 +102,69 @@ export function HomeClient({ topSellers, allProducts }: { topSellers: Product[];
         </div>
       </div>
 
-      {/* Three Feature Cards */}
+      {/* Best Sellers Section */}
+      <div className="w-full bg-gradient-to-b from-main-light to-white">
+        <section className="container mx-auto px-4 py-12">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-main mb-4">
+              Best Sellers
+            </h2>
+          </div>
+          <div
+            className="relative overflow-hidden w-full"
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+          >
+            {/* Mobile prev/next arrows */}
+            {isMobile && totalSlides > 1 && (
+              <>
+                <button
+                  onClick={goToPrev}
+                  className="absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-md hover:bg-white transition-colors"
+                  aria-label="Previous"
+                >
+                  <ChevronLeft className="w-5 h-5 text-main" />
+                </button>
+                <button
+                  onClick={goToNext}
+                  className="absolute right-1 top-1/2 -translate-y-1/2 z-10 bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-md hover:bg-white transition-colors"
+                  aria-label="Next"
+                >
+                  <ChevronRight className="w-5 h-5 text-main" />
+                </button>
+              </>
+            )}
+            <div
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+            >
+              {Array.from({ length: totalSlides }).map((_, pageIndex) => (
+                <div key={pageIndex} className={`flex gap-8 min-w-full ${isMobile ? 'justify-center px-8' : 'justify-evenly px-4'}`}>
+                  {topSellers.slice(pageIndex * itemsPerSlide, (pageIndex + 1) * itemsPerSlide).map((product: Product) => (
+                    <div key={product.id} className={isMobile ? "w-full max-w-[320px]" : "w-[300px]"}>
+                      <ProductCard product={product} />
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+            {/* Carousel Navigation Dots */}
+            <div className="flex justify-center gap-2 mt-8">
+              {Array.from({ length: totalSlides }).map((_, index) => (
+                <button
+                  key={index}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    currentSlide === index ? 'bg-main w-4' : 'bg-main/30'
+                  }`}
+                  onClick={() => setCurrentSlide(index)}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* Quick Links Cards (moved below Best Sellers) */}
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           <Link href="/shop?filter=best-sellers" className="group">
@@ -112,49 +197,6 @@ export function HomeClient({ topSellers, allProducts }: { topSellers: Product[];
         </div>
       </div>
 
-      {/* Best Sellers Section */}
-      <div className="w-full bg-gradient-to-b from-main-light to-white">
-        <section className="container mx-auto px-4 py-12">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-main mb-4">
-              Best Sellers
-            </h2>
-          </div>
-          <div
-            className="relative overflow-hidden w-full"
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-          >
-            <div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {Array.from({ length: Math.ceil(topSellers.length / 4) }).map((_, pageIndex) => (
-                <div key={pageIndex} className="flex gap-8 min-w-full justify-evenly px-4">
-                  {topSellers.slice(pageIndex * 4, (pageIndex + 1) * 4).map((product: Product) => (
-                    <div key={product.id} className="w-[300px]">
-                      <ProductCard product={product} />
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-            {/* Carousel Navigation Dots */}
-            <div className="flex justify-center gap-2 mt-8">
-              {Array.from({ length: Math.ceil(topSellers.length / 4) }).map((_, index) => (
-                <button
-                  key={index}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    currentSlide === index ? 'bg-main w-4' : 'bg-main/30'
-                  }`}
-                  onClick={() => setCurrentSlide(index)}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-      </div>
-
       {/* Why Choose Our Prints - Bento Grid */}
       <div className="py-12 mb-4">
         <div className="container mx-auto px-4">
@@ -164,47 +206,29 @@ export function HomeClient({ topSellers, allProducts }: { topSellers: Product[];
             </h2>
             <p className="text-lg text-gray-700 max-w-2xl mx-auto">Quality, care, and attention to detail in every order.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-3 gap-6 max-w-6xl mx-auto">
-            {/* Large CTA Card */}
-            <div className="relative col-span-2 row-span-3 rounded-2xl overflow-hidden flex flex-col items-center justify-center bg-main text-white p-8 transition-transform duration-300 group hover:scale-[1.02] hover:shadow-2xl">
-              <h2 className="text-3xl font-bold mb-4 text-center">Shop Our Prints</h2>
-              <p className="text-lg text-white/90 mb-6 text-center max-w-sm">
-                Discover book-inspired wall art designed for readers, dreamers, and shelf-decorators.
-              </p>
-              <div className="flex gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-6 max-w-6xl mx-auto">
+            {/* Large CTA Card with background image */}
+            <div className="relative col-span-1 md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden flex flex-col items-center justify-center text-white p-8 transition-transform duration-300 group hover:scale-[1.02] hover:shadow-2xl min-h-[300px]">
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: "url('/why-choose-bg.png')" }}
+              />
+              <div className="absolute inset-0 bg-black/50" />
+              <div className="relative z-10 text-center">
+                <h2 className="text-3xl font-bold mb-4">Shop Our Prints</h2>
+                <p className="text-lg text-white/90 mb-6 max-w-sm">
+                  Discover book-inspired wall art designed for readers, dreamers, and shelf-decorators.
+                </p>
                 <Link href="/shop">
                   <Button size="lg" className="bg-white text-main font-semibold hover:bg-main-light transition-colors">
                     Shop Now
                   </Button>
                 </Link>
-                <Link href="/collections">
-                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 transition-colors">
-                    Collections
-                  </Button>
-                </Link>
               </div>
             </div>
             {/* Feature cards from siteConfig */}
-            {siteConfig.features.slice(0, 2).map((feature) => (
-              <div key={feature.title} className={`flex flex-col items-center justify-center bg-white rounded-2xl shadow p-6 ${feature === siteConfig.features[0] ? 'row-span-2' : ''} group hover:scale-105 hover:shadow-xl transition-transform duration-300`}>
-                <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center mb-3">
-                  {featureIcons[feature.icon]}
-                </div>
-                <span className="font-semibold text-main text-lg mb-1">{feature.title}</span>
-                <p className="text-gray-600 text-sm text-center">{feature.description}</p>
-              </div>
-            ))}
-            {siteConfig.features.slice(2, 4).map((feature) => (
-              <div key={feature.title} className={`flex flex-col items-center justify-center bg-white rounded-2xl shadow p-6 ${feature === siteConfig.features[3] ? 'col-span-2' : ''} group hover:scale-105 hover:shadow-xl transition-transform duration-300`}>
-                <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center mb-3">
-                  {featureIcons[feature.icon]}
-                </div>
-                <span className="font-semibold text-main text-lg mb-1">{feature.title}</span>
-                <p className="text-gray-600 text-sm text-center">{feature.description}</p>
-              </div>
-            ))}
-            {siteConfig.features.slice(4).map((feature) => (
-              <div key={feature.title} className="flex flex-col items-center justify-center bg-white rounded-2xl shadow p-6 group hover:scale-105 hover:shadow-xl transition-transform duration-300">
+            {siteConfig.features.map((feature) => (
+              <div key={feature.title} className="flex flex-col items-center justify-center bg-white rounded-2xl shadow p-6 group hover:scale-105 hover:shadow-xl transition-transform duration-300 min-w-0">
                 <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center mb-3">
                   {featureIcons[feature.icon]}
                 </div>
@@ -224,14 +248,14 @@ export function HomeClient({ topSellers, allProducts }: { topSellers: Product[];
           </h2>
           <p className="text-lg text-gray-700 max-w-2xl mx-auto">Explore our curated collections of book-inspired prints.</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredCategories.map((category) => (
             <Link
               key={category}
               href={`/collections/${encodeURIComponent(category.toLowerCase().replace(/\s+/g, '-'))}`}
               className="group"
             >
-              <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 text-center group-hover:scale-[1.02]">
+              <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 text-center group-hover:scale-[1.02] h-full">
                 <h3 className="text-xl font-bold text-main mb-2">{category}</h3>
                 <p className="text-gray-600 text-sm">
                   {categoryCounts[category]} {categoryCounts[category] === 1 ? 'print' : 'prints'}

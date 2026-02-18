@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingBag, Search, Folder } from "lucide-react";
+import { ShoppingBag, Search, Folder, Menu, X } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useSearch } from "@/context/SearchContext";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,7 @@ export function Navbar() {
   const { items } = useCart();
   const { searchQuery, setSearchQuery, searchResults, categoryResults, isSearching, performSearch } = useSearch();
   const [open, setOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
   const itemCount = items.reduce((total, item) => total + item.quantity, 0);
 
@@ -37,34 +38,59 @@ export function Navbar() {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, []);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
+  const navLinks = siteConfig.nav.links.filter(link => !("highlight" in link && link.highlight));
+  const contactLink = siteConfig.nav.links.find(link => "highlight" in link && link.highlight);
+
   return (
     <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="relative">
-            <h1 className="text-2xl font-bold tracking-tight text-main">
-              <span className="font-extrabold">{siteConfig.name.toUpperCase()}</span>
-            </h1>
+          <Link href="/" className="relative shrink-0">
+            <Image
+              src="/logo.png"
+              alt={siteConfig.name}
+              width={160}
+              height={40}
+              className="h-8 w-auto"
+              priority
+            />
           </Link>
-          <div className="flex items-center space-x-8">
-            {siteConfig.nav.links.map((link) =>
-              "highlight" in link && link.highlight ? (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="px-4 py-2 rounded-md border-2 border-main text-main hover:bg-main hover:text-white transition-all duration-300"
-                >
-                  {link.label}
-                </Link>
-              ) : (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-gray-600 hover:text-main transition-colors"
-                >
-                  {link.label}
-                </Link>
-              )
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-gray-600 hover:text-main transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+            {contactLink && (
+              <Link
+                href={contactLink.href}
+                className="px-4 py-2 rounded-md border-2 border-main text-main hover:bg-main hover:text-white transition-all duration-300"
+              >
+                {contactLink.label}
+              </Link>
             )}
             <Button
               variant="ghost"
@@ -89,8 +115,84 @@ export function Navbar() {
               </Button>
             </Link>
           </div>
+
+          {/* Mobile Navigation Icons */}
+          <div className="flex md:hidden items-center space-x-2">
+            {contactLink && (
+              <Link
+                href={contactLink.href}
+                className="px-3 py-1.5 rounded-md border-2 border-main text-main text-sm hover:bg-main hover:text-white transition-all duration-300"
+              >
+                {contactLink.label}
+              </Link>
+            )}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-gray-600 hover:text-main"
+              onClick={() => setOpen(true)}
+            >
+              <Search className="h-5 w-5" />
+            </Button>
+            <Link href="/cart" className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative text-gray-600 hover:text-main"
+              >
+                <ShoppingBag className="h-6 w-6" />
+                {itemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-main text-xs font-medium text-white flex items-center justify-center">
+                    {itemCount}
+                  </span>
+                )}
+              </Button>
+            </Link>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-gray-600 hover:text-main"
+              onClick={() => setMobileMenuOpen(true)}
+            >
+              <Menu className="h-6 w-6" />
+            </Button>
+          </div>
         </div>
       </div>
+
+      {/* Mobile Slide-out Menu */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <div className="absolute right-0 top-0 h-full w-72 bg-white shadow-xl flex flex-col animate-slide-in-right">
+            <div className="flex items-center justify-between p-4 border-b">
+              <span className="text-lg font-semibold text-main">Menu</span>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <X className="h-6 w-6" />
+              </Button>
+            </div>
+            <div className="flex flex-col py-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="px-6 py-3 text-gray-700 hover:bg-main-light hover:text-main transition-colors text-lg"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput

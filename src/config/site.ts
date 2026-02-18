@@ -22,7 +22,7 @@ export const siteConfig = {
   },
 
   announcements: [
-    "FREE UK SHIPPING ON ORDERS OVER £30",
+    "WORLDWIDE SHIPPING - FREE FOR MOST COUNTRIES",
     "RATED EXCELLENT ★★★★★ BY OUR READERS",
     "BOOK-INSPIRED WALL ART — DESIGNED FOR READERS, BY READERS",
   ],
@@ -55,7 +55,7 @@ export const siteConfig = {
     {
       icon: "Maximize",
       title: "Multiple Sizes",
-      description: "Available in A5, A4, and A3 to fit any space in your reading nook.",
+      description: "Available in multiple sizes to fit any space in your reading nook.",
     },
     {
       icon: "Package",
@@ -65,17 +65,7 @@ export const siteConfig = {
     {
       icon: "Truck",
       title: "Fulfilled by PrintShrimp",
-      description: "Professional print fulfilment with fast, reliable UK delivery.",
-    },
-    {
-      icon: "ShieldCheck",
-      title: "Quality Assured",
-      description: "Every design is carefully checked for excellence before printing.",
-    },
-    {
-      icon: "RotateCcw",
-      title: "Easy Returns",
-      description: "Hassle-free returns for peace of mind.",
+      description: "Professional print fulfilment with fast, reliable worldwide delivery.",
     },
   ],
 } as const;

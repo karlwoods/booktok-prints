@@ -169,21 +169,6 @@ export default function ContactPage() {
                     {siteConfig.company.supportEmail}
                   </a>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-gray-800">Phone</h3>
-                  <a
-                    href={`tel:${siteConfig.company.phone.replace(/\s/g, "")}`}
-                    className="text-main hover:underline"
-                  >
-                    {siteConfig.company.phone}
-                  </a>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-800">Registered Address</h3>
-                  <p className="text-gray-600">
-                    {siteConfig.company.registeredAddress}
-                  </p>
-                </div>
               </div>
             </div>
 
@@ -192,8 +177,17 @@ export default function ContactPage() {
               <h2 className="text-2xl font-semibold text-main mb-6">Company Information</h2>
               <div className="space-y-2 text-gray-600">
                 <p>{siteConfig.company.legalName}</p>
-                <p>Company Number: {siteConfig.company.companyNumber}</p>
-                <p>VAT Number: {siteConfig.company.vatNumber}</p>
+                <div>
+                  <h3 className="font-semibold text-gray-800">Etsy Store</h3>
+                  <a
+                    href="https://booktokprint.etsy.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-main hover:underline"
+                  >
+                    booktokprint.etsy.com
+                  </a>
+                </div>
               </div>
             </div>
           </div>
