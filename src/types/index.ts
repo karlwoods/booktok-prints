@@ -1,6 +1,9 @@
 export interface ProductVariation {
-  size: string;
+  id: string;
+  name: string;
+  size?: string;
   price: number;
+  order?: number;
 }
 
 export interface Product {
