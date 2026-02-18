@@ -45,10 +45,14 @@ export function CategoryNav({ categories, isHomePage = false }: CategoryNavProps
     router.push(`/shop?${params.toString()}`);
   };
 
+  // Mobile: show top 8 categories as chips
+  const mobileCategories = categories.slice(0, 8);
+
   return (
     <div className="bg-white border-b">
       <div className="container mx-auto px-4">
-        <div className="flex flex-wrap items-center justify-center gap-y-2 py-3 md:h-16">
+        {/* Desktop layout */}
+        <div className="hidden md:flex flex-wrap items-center justify-center gap-y-2 h-16">
           <Button
             key="best-sellers"
             variant={selectedCategory === "best-sellers" ? "default" : "ghost"}
@@ -82,6 +86,39 @@ export function CategoryNav({ categories, isHomePage = false }: CategoryNavProps
               )}
             </span>
           ))}
+        </div>
+
+        {/* Mobile swipeable chip layout */}
+        <div className="flex md:hidden overflow-x-auto gap-2 py-3 scrollbar-hide -mx-4 px-4">
+          <button
+            onClick={() => handleCategoryChange("best-sellers")}
+            className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              selectedCategory === "best-sellers"
+                ? "bg-main text-white"
+                : "bg-main/10 text-main hover:bg-main/20"
+            }`}
+          >
+            Best Sellers
+          </button>
+          {mobileCategories.map((category) => (
+            <button
+              key={category}
+              onClick={() => handleCategoryChange(category)}
+              className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                selectedCategory === category
+                  ? "bg-main text-white"
+                  : "bg-main/10 text-main hover:bg-main/20"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+          <button
+            onClick={() => router.push("/collections")}
+            className="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium bg-main/10 text-main hover:bg-main/20 transition-colors"
+          >
+            All Collections
+          </button>
         </div>
       </div>
     </div>

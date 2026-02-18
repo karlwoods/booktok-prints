@@ -64,11 +64,11 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="relative shrink-0">
             <Image
-              src="/logo.png"
+              src="/booktokprint_banner_logo.jpg"
               alt={siteConfig.name}
-              width={160}
-              height={40}
-              className="h-8 w-auto"
+              width={200}
+              height={50}
+              className="h-9 w-auto"
               priority
             />
           </Link>

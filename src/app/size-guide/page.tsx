@@ -7,9 +7,19 @@ export const metadata: Metadata = {
 };
 
 const sizes = [
-  { name: "A5", dimensions: "148 x 210 mm", description: "Perfect for desks, shelves, and small spaces." },
-  { name: "A4", dimensions: "210 x 297 mm", description: "Our most popular size — great for any room." },
-  { name: "A3", dimensions: "297 x 420 mm", description: "A statement piece for your reading nook or living room." },
+  { name: "A5", dimensions: "14.8 × 21 cm" },
+  { name: "A4", dimensions: "21 × 29.7 cm" },
+  { name: "A3", dimensions: "29.7 × 42 cm" },
+  { name: "A2", dimensions: "42 × 59.4 cm" },
+  { name: "A1", dimensions: "59.4 × 84.1 cm" },
+  { name: '8×10"', dimensions: "20 × 25 cm" },
+  { name: '11×14"', dimensions: "27 × 35 cm" },
+  { name: '11×17"', dimensions: "28 × 43 cm" },
+  { name: '12×18"', dimensions: "30 × 45 cm" },
+  { name: '16×20"', dimensions: "40 × 50 cm" },
+  { name: '16×24"', dimensions: "40 × 60 cm" },
+  { name: '18×24"', dimensions: "45 × 60 cm" },
+  { name: '24×36"', dimensions: "60 × 90 cm" },
 ];
 
 export default function SizeGuidePage() {
@@ -23,13 +33,12 @@ export default function SizeGuidePage() {
             All of our prints are available in standard paper sizes. Here&apos;s a quick guide to help you choose.
           </p>
         </div>
-        <div className="max-w-3xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {sizes.map((size) => (
-              <div key={size.name} className="bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-sm text-center">
-                <h2 className="text-2xl font-bold text-main mb-2">{size.name}</h2>
-                <p className="text-gray-800 font-medium mb-2">{size.dimensions}</p>
-                <p className="text-gray-600 text-sm">{size.description}</p>
+              <div key={size.name} className="bg-white/80 backdrop-blur-sm rounded-lg p-5 shadow-sm text-center">
+                <h2 className="text-xl font-bold text-main mb-1">{size.name}</h2>
+                <p className="text-gray-600 text-sm">{size.dimensions}</p>
               </div>
             ))}
           </div>

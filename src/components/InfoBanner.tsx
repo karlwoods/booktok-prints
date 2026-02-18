@@ -16,7 +16,7 @@ export function InfoBanner() {
 
   return (
     <div className="w-full bg-main text-white text-sm overflow-hidden">
-      <div className="container mx-auto px-4 py-1">
+      <div className="container mx-auto px-4 py-2.5 md:py-1.5">
         <div className="flex items-center justify-center relative h-6">
           {siteConfig.announcements.map((text, index) => (
             <div

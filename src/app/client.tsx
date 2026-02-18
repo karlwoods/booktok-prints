@@ -80,14 +80,14 @@ export function HomeClient({ topSellers, allProducts }: { topSellers: Product[];
 
       {/* Hero Section */}
       <div className="w-full bg-gradient-to-b from-white to-main-light">
-        <div className="container mx-auto px-4 py-16 text-center">
+        <div className="container mx-auto px-4 pt-11 pb-11 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-main mb-4">
             Book-Inspired Wall Art
           </h1>
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Beautiful prints for readers, dreamers, and shelf-decorators. Find the perfect piece for your reading nook.
+            Because your walls deserve a plot twist.
           </p>
-          <div className="flex gap-4 justify-center">
+          <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
             <Link href="/shop">
               <Button size="lg" className="bg-main text-white font-semibold hover:bg-main-hover transition-colors min-w-[200px]">
                 Shop Prints

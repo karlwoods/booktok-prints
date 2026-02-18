@@ -1,6 +1,5 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { siteConfig } from "@/config/site";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -25,7 +24,7 @@ export default function ShippingPage() {
             <section className="space-y-4">
               <h2 className="text-2xl font-semibold text-main">Processing Time</h2>
               <p>
-                All orders are processed within 1-2 business days. Orders placed
+                All orders are processed within 1–2 business days. Orders placed
                 during weekends or holidays will be processed on the next
                 business day.
               </p>
@@ -35,14 +34,18 @@ export default function ShippingPage() {
               <h2 className="text-2xl font-semibold text-main">
                 Shipping Methods &amp; Delivery Times
               </h2>
-              <ul className="list-disc pl-6 space-y-2">
+              <p>
+                Delivery times vary depending on your location and the shipping
+                option selected at checkout:
+              </p>
+              <ul className="list-disc pl-6 space-y-4">
                 <li>
-                  <strong>Standard Shipping (3-5 business days)</strong>
+                  <strong>Standard Shipping (estimated 3–5 business days in the UK)</strong>
                   <br />
-                  Free on orders over £30
+                  Free on orders over £30 (UK only)
                 </li>
                 <li>
-                  <strong>Express Shipping (1-2 business days)</strong>
+                  <strong>Express Shipping (estimated 1–2 business days in the UK)</strong>
                   <br />
                   Available at checkout for an additional fee
                 </li>
@@ -50,10 +53,11 @@ export default function ShippingPage() {
             </section>
 
             <section className="space-y-4">
-              <h2 className="text-2xl font-semibold text-main">Shipping Restrictions</h2>
+              <h2 className="text-2xl font-semibold text-main">Worldwide Shipping</h2>
               <p>
-                Currently, we only ship within the United Kingdom. International
-                shipping may be available in the future.
+                We ship worldwide via our fulfilment partner PrintShrimp, so your
+                order can be produced and shipped as efficiently as possible.
+                International delivery times and costs will be shown at checkout.
               </p>
             </section>
 
@@ -73,6 +77,10 @@ export default function ShippingPage() {
                 unused and in the same condition that you received it, in its
                 original packaging.
               </p>
+              <p>
+                If you&apos;d like to start a return, please get in touch with us
+                first and we&apos;ll guide you through the next steps.
+              </p>
             </section>
 
             <section className="space-y-4">
@@ -91,10 +99,10 @@ export default function ShippingPage() {
               <p>
                 If you have any questions about shipping or returns, please contact us at{" "}
                 <a
-                  href={`mailto:${siteConfig.company.supportEmail}`}
+                  href="mailto:hello@booktokprint.com"
                   className="text-main hover:underline"
                 >
-                  {siteConfig.company.supportEmail}
+                  hello@booktokprint.com
                 </a>
               </p>
             </section>

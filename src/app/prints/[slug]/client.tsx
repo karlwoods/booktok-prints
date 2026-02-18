@@ -13,6 +13,34 @@ import { ProductCard } from "@/components/ProductCard";
 import { getLowestPrice } from "@/lib/products";
 import { ChevronDown } from "lucide-react";
 
+const sizeDimensions: Record<string, string> = {
+  "A5": "14.8 × 21 cm",
+  "A4": "21 × 29.7 cm",
+  "A3": "29.7 × 42 cm",
+  "A2": "42 × 59.4 cm",
+  "A1": "59.4 × 84.1 cm",
+  '8×10"': "20 × 25 cm",
+  '8x10"': "20 × 25 cm",
+  '11×14"': "27 × 35 cm",
+  '11x14"': "27 × 35 cm",
+  '11×17"': "28 × 43 cm",
+  '11x17"': "28 × 43 cm",
+  '12×18"': "30 × 45 cm",
+  '12x18"': "30 × 45 cm",
+  '16×20"': "40 × 50 cm",
+  '16x20"': "40 × 50 cm",
+  '16×24"': "40 × 60 cm",
+  '16x24"': "40 × 60 cm",
+  '18×24"': "45 × 60 cm",
+  '18x24"': "45 × 60 cm",
+  '24×36"': "60 × 90 cm",
+  '24x36"': "60 × 90 cm",
+};
+
+function getDimensions(size: string): string | undefined {
+  return sizeDimensions[size] || sizeDimensions[size.trim()];
+}
+
 interface ProductDetailClientProps {
   product: ProductWithRatings;
   relatedProducts: ProductWithRatings[];
@@ -146,7 +174,7 @@ export function ProductDetailClient({
                 >
                   <span className="text-sm font-medium text-gray-700">
                     {selectedSize
-                      ? `${selectedSize} — £${currentPrice.toFixed(2)}`
+                      ? `${selectedSize}${getDimensions(selectedSize) ? ` (${getDimensions(selectedSize)})` : ""} — £${currentPrice.toFixed(2)}`
                       : "Select size"}
                   </span>
                   <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform ${sizeAccordionOpen ? "rotate-180" : ""}`} />
@@ -165,7 +193,10 @@ export function ProductDetailClient({
                             : "text-gray-700 hover:bg-main-light"
                         }`}
                       >
-                        {variation.size} — £{variation.price.toFixed(2)}
+                        <span className="flex items-center justify-between w-full">
+                          <span>{variation.size}{getDimensions(variation.size) ? ` (${getDimensions(variation.size)})` : ""}</span>
+                          <span>£{variation.price.toFixed(2)}</span>
+                        </span>
                       </button>
                     ))}
                   </div>
@@ -175,7 +206,7 @@ export function ProductDetailClient({
 
             {product.description && (
               <div className="prose max-w-none">
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 max-h-[400px] overflow-y-auto">
+                <div className="bg-white pt-0 px-6 pb-6 rounded-lg shadow-sm border border-gray-100 max-h-[400px] overflow-y-auto">
                   <h3 className="text-lg font-semibold text-main mb-4">
                     About This Print
                   </h3>
