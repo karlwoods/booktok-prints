@@ -79,22 +79,27 @@ export function HomeClient({ topSellers, allProducts }: { topSellers: Product[];
       <CategoryNav categories={categories} isHomePage={true} />
 
       {/* Hero Section */}
-      <div className="w-full bg-gradient-to-b from-white to-main-light">
-        <div className="container mx-auto px-4 pt-11 pb-11 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-main mb-4">
+      <div className="relative w-full">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/homepage-banner.png')" }}
+        />
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="relative z-10 container mx-auto px-4 pt-16 pb-16 md:pt-24 md:pb-24 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Book-Inspired Wall Art
           </h1>
-          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-8">
             Because your walls deserve a plot twist.
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
             <Link href="/shop">
-              <Button size="lg" className="bg-main text-white font-semibold hover:bg-main-hover transition-colors min-w-[200px]">
+              <Button size="lg" className="bg-white text-main font-semibold hover:bg-white/90 transition-colors min-w-[200px]">
                 Shop Prints
               </Button>
             </Link>
             <Link href="/collections">
-              <Button size="lg" variant="outline" className="border-main text-main hover:bg-main/10 min-w-[200px]">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 min-w-[200px]">
                 Browse Collections
               </Button>
             </Link>

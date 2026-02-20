@@ -64,11 +64,11 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="relative shrink-0">
             <Image
-              src="/booktokprint_banner_logo.jpg"
+              src="/final-logo.png"
               alt={siteConfig.name}
               width={200}
               height={50}
-              className="h-9 w-auto"
+              className="h-8 w-auto"
               priority
             />
           </Link>
@@ -118,14 +118,6 @@ export function Navbar() {
 
           {/* Mobile Navigation Icons */}
           <div className="flex md:hidden items-center space-x-2">
-            {contactLink && (
-              <Link
-                href={contactLink.href}
-                className="px-3 py-1.5 rounded-md border-2 border-main text-main text-sm hover:bg-main hover:text-white transition-all duration-300"
-              >
-                {contactLink.label}
-              </Link>
-            )}
             <Button
               variant="ghost"
               size="icon"
@@ -164,10 +156,10 @@ export function Navbar() {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div
-            className="absolute inset-0 bg-black/40"
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="absolute right-0 top-0 h-full w-72 bg-white shadow-xl flex flex-col animate-slide-in-right">
+          <div className="absolute right-0 top-0 h-full w-72 bg-white shadow-xl flex flex-col animate-slide-in-right z-10">
             <div className="flex items-center justify-between p-4 border-b">
               <span className="text-lg font-semibold text-main">Menu</span>
               <Button
@@ -189,6 +181,15 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
+              {contactLink && (
+                <Link
+                  href={contactLink.href}
+                  className="px-6 py-3 text-gray-700 hover:bg-main-light hover:text-main transition-colors text-lg border-t border-gray-100 mt-2 pt-5"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {contactLink.label}
+                </Link>
+              )}
             </div>
           </div>
         </div>

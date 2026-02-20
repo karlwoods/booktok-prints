@@ -24,7 +24,7 @@ export const siteConfig = {
   announcements: [
     "WORLDWIDE SHIPPING - FREE FOR MOST COUNTRIES",
     "RATED EXCELLENT ★★★★★ BY OUR READERS",
-    "BOOK-INSPIRED WALL ART — DESIGNED FOR READERS, BY READERS",
+    "DESIGNED FOR READERS, BY READERS",
   ],
 
   shipping: {

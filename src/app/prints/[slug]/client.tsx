@@ -7,11 +7,11 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { ProductCard } from "@/components/ProductCard";
 import { getLowestPrice } from "@/lib/products";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, X, ZoomIn } from "lucide-react";
 
 interface ProductDetailClientProps {
   product: ProductWithRatings;
@@ -35,10 +35,54 @@ export function ProductDetailClient({
   const [currentPrice, setCurrentPrice] = useState(defaultPrice);
   const [currentHeroImage, setCurrentHeroImage] = useState(product.image);
   const [sizeAccordionOpen, setSizeAccordionOpen] = useState(false);
+  const [descriptionExpanded, setDescriptionExpanded] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   const { addToCart } = useCart();
   const { toast } = useToast();
 
   const additionalImages = product.additionalImages || [];
+  const allImages = [product.image, ...additionalImages];
+  const currentImageIndex = allImages.indexOf(currentHeroImage);
+
+  const goToPrevImage = useCallback(() => {
+    const prevIndex = (currentImageIndex - 1 + allImages.length) % allImages.length;
+    setCurrentHeroImage(allImages[prevIndex]);
+  }, [currentImageIndex, allImages]);
+
+  const goToNextImage = useCallback(() => {
+    const nextIndex = (currentImageIndex + 1) % allImages.length;
+    setCurrentHeroImage(allImages[nextIndex]);
+  }, [currentImageIndex, allImages]);
+
+  const openLightbox = () => {
+    setLightboxIndex(currentImageIndex >= 0 ? currentImageIndex : 0);
+    setLightboxOpen(true);
+  };
+
+  const lightboxPrev = useCallback(() => {
+    setLightboxIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+  }, [allImages.length]);
+
+  const lightboxNext = useCallback(() => {
+    setLightboxIndex((prev) => (prev + 1) % allImages.length);
+  }, [allImages.length]);
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightboxOpen(false);
+      if (e.key === "ArrowLeft") lightboxPrev();
+      if (e.key === "ArrowRight") lightboxNext();
+    };
+    document.addEventListener("keydown", handleKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = "";
+    };
+  }, [lightboxOpen, lightboxPrev, lightboxNext]);
 
   const handleImageClick = (clickedImage: string) => {
     if (clickedImage === currentHeroImage) return;
@@ -62,6 +106,17 @@ export function ProductDetailClient({
     });
   };
 
+  // Truncate description for preview (~60 words)
+  const getDescriptionPreview = (text: string) => {
+    const words = text.split(/\s+/);
+    if (words.length <= 60) return null; // No need to truncate
+    return words.slice(0, 60).join(" ") + "…";
+  };
+
+  const fullDescription = product.description || "";
+  const descriptionPreview = getDescriptionPreview(fullDescription);
+  const needsTruncation = descriptionPreview !== null;
+
   return (
     <div className="min-h-screen bg-main-light flex flex-col">
       <Navbar />
@@ -69,7 +124,10 @@ export function ProductDetailClient({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Product Images */}
           <div className="space-y-4">
-            <div className="relative aspect-square max-w-md mx-auto rounded-lg overflow-hidden bg-white border-8 border-white">
+            <div
+              className="relative aspect-square max-w-md mx-auto rounded-lg overflow-hidden bg-white border-8 border-white group cursor-zoom-in"
+              onClick={openLightbox}
+            >
               <Image
                 src={currentHeroImage}
                 alt={product.title}
@@ -77,6 +135,29 @@ export function ProductDetailClient({
                 className="object-contain"
                 priority
               />
+              {/* Zoom indicator on hover */}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors flex items-center justify-center">
+                <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-70 transition-opacity drop-shadow-lg" />
+              </div>
+              {/* Left/Right arrows on main image */}
+              {allImages.length > 1 && (
+                <>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); goToPrevImage(); }}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 backdrop-blur-sm rounded-full p-1.5 shadow-md hover:bg-white transition-colors opacity-0 group-hover:opacity-100"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft className="w-5 h-5 text-gray-700" />
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); goToNextImage(); }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 backdrop-blur-sm rounded-full p-1.5 shadow-md hover:bg-white transition-colors opacity-0 group-hover:opacity-100"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight className="w-5 h-5 text-gray-700" />
+                  </button>
+                </>
+              )}
             </div>
             {(product.image || additionalImages.length > 0) && (
               <div className="grid grid-cols-4 gap-4 max-w-md mx-auto">
@@ -176,19 +257,30 @@ export function ProductDetailClient({
               </div>
             )}
 
-            {product.description && (
+            {fullDescription && (
               <div className="prose max-w-none">
-                <div className="bg-white pt-0 px-6 pb-6 rounded-lg shadow-sm border border-gray-100 max-h-[400px] overflow-y-auto">
+                <div className="bg-white px-6 py-5 rounded-lg shadow-sm border border-gray-100">
                   <h3 className="text-lg font-semibold text-main mb-4">
                     About This Print
                   </h3>
                   <div className="space-y-4 text-gray-600">
-                    {product.description.split("\n").filter(p => p.trim()).map((paragraph, index) => (
+                    {(needsTruncation && !descriptionExpanded
+                      ? descriptionPreview!
+                      : fullDescription
+                    ).split("\n").filter(p => p.trim()).map((paragraph, index) => (
                       <p key={index} className="leading-relaxed">
                         {paragraph}
                       </p>
                     ))}
                   </div>
+                  {needsTruncation && (
+                    <button
+                      onClick={() => setDescriptionExpanded(!descriptionExpanded)}
+                      className="mt-3 text-main font-medium text-sm hover:underline"
+                    >
+                      {descriptionExpanded ? "Read less" : "Read more"}
+                    </button>
+                  )}
                 </div>
               </div>
             )}
@@ -237,6 +329,61 @@ export function ProductDetailClient({
           </div>
         )}
       </div>
+
+      {/* Lightbox */}
+      {lightboxOpen && (
+        <div className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center">
+          <button
+            onClick={() => setLightboxOpen(false)}
+            className="absolute top-4 right-4 z-10 text-white/80 hover:text-white p-2"
+            aria-label="Close lightbox"
+          >
+            <X className="w-8 h-8" />
+          </button>
+          {allImages.length > 1 && (
+            <>
+              <button
+                onClick={lightboxPrev}
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-3 text-white transition-colors"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={lightboxNext}
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-3 text-white transition-colors"
+                aria-label="Next image"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </>
+          )}
+          <div className="relative w-[90vw] h-[85vh] max-w-4xl">
+            <Image
+              src={allImages[lightboxIndex]}
+              alt={`${product.title} - Image ${lightboxIndex + 1}`}
+              fill
+              className="object-contain"
+              sizes="90vw"
+            />
+          </div>
+          {/* Lightbox dots */}
+          {allImages.length > 1 && (
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+              {allImages.map((_, index) => (
+                <button
+                  key={index}
+                  className={`w-2.5 h-2.5 rounded-full transition-all ${
+                    lightboxIndex === index ? "bg-white w-5" : "bg-white/40"
+                  }`}
+                  onClick={() => setLightboxIndex(index)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       <Footer />
     </div>
   );

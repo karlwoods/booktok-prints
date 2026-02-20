@@ -1,6 +1,7 @@
 import { fetchProducts } from "@/lib/products";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { HeroCarousel } from "@/components/HeroCarousel";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -23,6 +24,7 @@ export default async function CollectionsPage() {
   return (
     <div className="min-h-screen bg-main-light flex flex-col">
       <Navbar />
+      <HeroCarousel />
       <div className="container mx-auto px-4 py-12 flex-1">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-main mb-4">Browse Collections</h1>
