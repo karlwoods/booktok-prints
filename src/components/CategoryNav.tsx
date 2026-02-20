@@ -49,7 +49,7 @@ export function CategoryNav({ categories, isHomePage = false }: CategoryNavProps
   const mobileCategories = categories.slice(0, 8);
 
   return (
-    <div className="bg-white border-b">
+    <div className="bg-white dark:bg-gray-900 border-b dark:border-gray-800">
       <div className="container mx-auto px-4">
         {/* Desktop layout */}
         <div className="hidden md:flex flex-wrap items-center justify-center gap-y-2 h-16">

@@ -8,14 +8,14 @@ export const metadata: Metadata = {
 
 export default function ShippingPage() {
   return (
-    <div className="min-h-screen bg-main-light flex flex-col">
+    <div className="min-h-screen bg-main-light dark:bg-background flex flex-col">
       <Navbar />
       <div className="container mx-auto px-4 py-12 flex-1">
         <h1 className="text-3xl font-bold text-main text-center mb-8">
           Shipping &amp; Returns
         </h1>
-        <div className="max-w-3xl mx-auto bg-white/80 backdrop-blur-sm rounded-lg p-6">
-          <div className="space-y-4 text-gray-600">
+        <div className="max-w-3xl mx-auto bg-white/80 dark:bg-card/80 backdrop-blur-sm rounded-lg p-6">
+          <div className="space-y-4 text-gray-600 dark:text-gray-400">
             <p>
               We aim to provide reliable and efficient shipping to ensure your
               prints reach you safely and on time.

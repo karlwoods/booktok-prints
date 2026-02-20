@@ -38,12 +38,12 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
   const collectionName = matchedProducts[0].category;
 
   return (
-    <div className="min-h-screen bg-main-light flex flex-col">
+    <div className="min-h-screen bg-main-light dark:bg-background flex flex-col">
       <Navbar />
       <div className="container mx-auto px-4 py-12 flex-1">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-main mb-4">{collectionName}</h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-gray-600 dark:text-gray-400">
             {enriched.length} {enriched.length === 1 ? 'print' : 'prints'} in this collection
           </p>
         </div>

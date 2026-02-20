@@ -4,6 +4,7 @@ import { Product } from "@/types";
 import { generateSlug, getLowestPrice } from "@/lib/products";
 import Image from "next/image";
 import Link from "next/link";
+import { useCurrency } from "@/context/CurrencyContext";
 
 interface ProductCardProps {
   product: Product;
@@ -12,10 +13,11 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const hasVariations = product.variations && product.variations.length > 0;
   const displayPrice = getLowestPrice(product);
+  const { formatPrice } = useCurrency();
 
   return (
     <Link href={`/prints/${generateSlug(product.title)}`}>
-      <div className="group relative h-[420px] overflow-hidden rounded-lg bg-white p-4 shadow-md transition-all duration-300 hover:shadow-lg animate-fade-in flex flex-col">
+      <div className="group relative h-[420px] overflow-hidden rounded-lg bg-white dark:bg-card p-4 shadow-md transition-all duration-300 hover:shadow-lg animate-fade-in flex flex-col">
         {product.isTopSeller && (
           <div className="absolute top-2 left-2 z-10 px-3 py-1 bg-main text-white text-xs font-medium rounded-full">
             Best Seller
@@ -38,17 +40,17 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
 
         <div className="flex flex-col flex-1 mt-4">
-          <h3 className="text-lg font-semibold text-gray-900 line-clamp-2 mb-2">{product.title}</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 line-clamp-2 mb-2">{product.title}</h3>
 
           <div className="mt-auto">
             <div className="mb-3">
-              <span className="text-lg font-medium text-gray-900">
-                {hasVariations ? `From £${displayPrice.toFixed(2)}` : `£${displayPrice.toFixed(2)}`}
+              <span className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                {hasVariations ? `From ${formatPrice(displayPrice)}` : formatPrice(displayPrice)}
               </span>
             </div>
 
             {hasVariations && (
-              <p className="text-sm text-gray-500 mb-2">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
                 {product.variations!.length} sizes available
               </p>
             )}

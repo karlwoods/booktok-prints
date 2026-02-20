@@ -32,14 +32,19 @@
   }
  
   .dark {
+    --main-color: 183 46% 45%;
+    --main-color-light: 200 20% 12%;
+    --main-color-dark: 183 46% 55%;
+    --main-color-hover: 183 46% 50%;
+
     --background: 200 20% 6%;
     --foreground: 180 10% 95%;
-    --card: 200 20% 6%;
+    --card: 200 20% 10%;
     --card-foreground: 180 10% 95%;
-    --popover: 200 20% 6%;
+    --popover: 200 20% 10%;
     --popover-foreground: 180 10% 95%;
-    --primary: 180 19% 93%;
-    --primary-foreground: 183 46% 16%;
+    --primary: 183 46% 45%;
+    --primary-foreground: 200 20% 6%;
     --secondary: 190 20% 15%;
     --secondary-foreground: 180 10% 95%;
     --muted: 190 20% 15%;
@@ -48,8 +53,8 @@
     --accent-foreground: 180 10% 95%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 180 10% 95%;
-    --border: 190 20% 15%;
-    --input: 190 20% 15%;
+    --border: 190 20% 18%;
+    --input: 190 20% 18%;
     --ring: 183 46% 40%;
   }
 }

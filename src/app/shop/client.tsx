@@ -62,7 +62,7 @@ export function ShopClient({ products }: { products: Product[] }) {
   });
 
   return (
-    <div className="min-h-screen bg-main-light flex flex-col">
+    <div className="min-h-screen bg-main-light dark:bg-background flex flex-col">
       <Navbar />
       <InfoBanner />
       <CategoryNav categories={categories} />

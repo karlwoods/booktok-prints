@@ -73,7 +73,7 @@ export function HomeClient({ topSellers, allProducts }: { topSellers: Product[];
   };
 
   return (
-    <div className="min-h-screen bg-main-light flex flex-col">
+    <div className="min-h-screen bg-main-light dark:bg-background flex flex-col">
       <Navbar />
       <InfoBanner />
       <CategoryNav categories={categories} isHomePage={true} />
@@ -99,7 +99,7 @@ export function HomeClient({ topSellers, allProducts }: { topSellers: Product[];
               </Button>
             </Link>
             <Link href="/collections">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 min-w-[200px]">
+              <Button size="lg" variant="outline" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 transition-all duration-300 min-w-[200px]">
                 Browse Collections
               </Button>
             </Link>
@@ -107,8 +107,41 @@ export function HomeClient({ topSellers, allProducts }: { topSellers: Product[];
         </div>
       </div>
 
+      {/* Quick Links Cards (directly beneath hero) */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <Link href="/shop?filter=best-sellers" className="group">
+            <div className="bg-white dark:bg-card rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 text-center group-hover:scale-[1.02]">
+              <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center mx-auto mb-3">
+                <Sparkles className="w-6 h-6 text-main" />
+              </div>
+              <h3 className="font-semibold text-main text-lg mb-1">Best Sellers</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Our most-loved prints</p>
+            </div>
+          </Link>
+          <Link href="/collections" className="group">
+            <div className="bg-white dark:bg-card rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 text-center group-hover:scale-[1.02]">
+              <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center mx-auto mb-3">
+                <ShoppingBag className="w-6 h-6 text-main" />
+              </div>
+              <h3 className="font-semibold text-main text-lg mb-1">Shop by Vibe</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Browse by collection</p>
+            </div>
+          </Link>
+          <Link href="/shop" className="group">
+            <div className="bg-white dark:bg-card rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 text-center group-hover:scale-[1.02]">
+              <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center mx-auto mb-3">
+                <Gift className="w-6 h-6 text-main" />
+              </div>
+              <h3 className="font-semibold text-main text-lg mb-1">Gifts for Readers</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Perfect presents for book lovers</p>
+            </div>
+          </Link>
+        </div>
+      </div>
+
       {/* Best Sellers Section */}
-      <div className="w-full bg-gradient-to-b from-main-light to-white">
+      <div className="w-full bg-gradient-to-b from-main-light to-white dark:from-background dark:to-background">
         <section className="container mx-auto px-4 py-12">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-main mb-4">
@@ -169,39 +202,6 @@ export function HomeClient({ topSellers, allProducts }: { topSellers: Product[];
         </section>
       </div>
 
-      {/* Quick Links Cards (moved below Best Sellers) */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          <Link href="/shop?filter=best-sellers" className="group">
-            <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 text-center group-hover:scale-[1.02]">
-              <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center mx-auto mb-3">
-                <Sparkles className="w-6 h-6 text-main" />
-              </div>
-              <h3 className="font-semibold text-main text-lg mb-1">Best Sellers</h3>
-              <p className="text-gray-600 text-sm">Our most-loved prints</p>
-            </div>
-          </Link>
-          <Link href="/collections" className="group">
-            <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 text-center group-hover:scale-[1.02]">
-              <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center mx-auto mb-3">
-                <ShoppingBag className="w-6 h-6 text-main" />
-              </div>
-              <h3 className="font-semibold text-main text-lg mb-1">Shop by Vibe</h3>
-              <p className="text-gray-600 text-sm">Browse by collection</p>
-            </div>
-          </Link>
-          <Link href="/shop" className="group">
-            <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 text-center group-hover:scale-[1.02]">
-              <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center mx-auto mb-3">
-                <Gift className="w-6 h-6 text-main" />
-              </div>
-              <h3 className="font-semibold text-main text-lg mb-1">Gifts for Readers</h3>
-              <p className="text-gray-600 text-sm">Perfect presents for book lovers</p>
-            </div>
-          </Link>
-        </div>
-      </div>
-
       {/* Why Choose Our Prints - Bento Grid */}
       <div className="py-12 mb-4">
         <div className="container mx-auto px-4">
@@ -209,7 +209,7 @@ export function HomeClient({ topSellers, allProducts }: { topSellers: Product[];
             <h2 className="text-3xl md:text-4xl font-bold text-main mb-4">
               Why Choose Our Prints?
             </h2>
-            <p className="text-lg text-gray-700 max-w-2xl mx-auto">Quality, care, and attention to detail in every order.</p>
+            <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">Quality, care, and attention to detail in every order.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-6 max-w-6xl mx-auto">
             {/* Large CTA Card with background image */}
@@ -233,12 +233,12 @@ export function HomeClient({ topSellers, allProducts }: { topSellers: Product[];
             </div>
             {/* Feature cards from siteConfig */}
             {siteConfig.features.map((feature) => (
-              <div key={feature.title} className="flex flex-col items-center justify-center bg-white rounded-2xl shadow p-6 group hover:scale-105 hover:shadow-xl transition-transform duration-300 min-w-0">
+              <div key={feature.title} className="flex flex-col items-center justify-center bg-white dark:bg-card rounded-2xl shadow p-6 group hover:scale-105 hover:shadow-xl transition-transform duration-300 min-w-0">
                 <div className="w-12 h-12 rounded-full bg-main/10 flex items-center justify-center mb-3">
                   {featureIcons[feature.icon]}
                 </div>
                 <span className="font-semibold text-main text-lg mb-1">{feature.title}</span>
-                <p className="text-gray-600 text-sm text-center">{feature.description}</p>
+                <p className="text-gray-600 dark:text-gray-400 text-sm text-center">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -251,26 +251,46 @@ export function HomeClient({ topSellers, allProducts }: { topSellers: Product[];
           <h2 className="text-3xl md:text-4xl font-bold text-main mb-4">
             Browse Collections
           </h2>
-          <p className="text-lg text-gray-700 max-w-2xl mx-auto">Explore our curated collections of book-inspired prints.</p>
+          <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">Explore our curated collections of book-inspired prints.</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredCategories.map((category) => (
-            <Link
-              key={category}
-              href={`/collections/${encodeURIComponent(category.toLowerCase().replace(/\s+/g, '-'))}`}
-              className="group"
-            >
-              <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 text-center group-hover:scale-[1.02] h-full">
-                <h3 className="text-xl font-bold text-main mb-2">{category}</h3>
-                <p className="text-gray-600 text-sm">
-                  {categoryCounts[category]} {categoryCounts[category] === 1 ? 'print' : 'prints'}
-                </p>
-                <span className="inline-block mt-3 text-main text-sm font-medium group-hover:underline">
-                  View Collection
-                </span>
-              </div>
-            </Link>
-          ))}
+          {featuredCategories.map((category) => {
+            const slug = category.toLowerCase().replace(/\s+/g, '-');
+            return (
+              <Link
+                key={category}
+                href={`/collections/${encodeURIComponent(slug)}`}
+                className="group"
+              >
+                <div className="bg-white dark:bg-card rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 group-hover:scale-[1.02] h-full border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col">
+                  <div className="border-t-4 border-main" />
+                  <h3 className="text-xl font-bold text-main px-6 pt-5 pb-3">{category}</h3>
+                  <div className="relative w-full h-40 mx-auto px-4">
+                    <div className="relative w-full h-full rounded-lg overflow-hidden bg-main-light">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={`/collections/${slug}.jpg`}
+                        alt={category}
+                        className="absolute inset-0 w-full h-full object-cover"
+                        loading="lazy"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="px-6 pt-4 pb-5 mt-auto">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
+                      {categoryCounts[category]} {categoryCounts[category] === 1 ? 'print' : 'prints'}
+                    </p>
+                    <span className="inline-block text-main text-sm font-medium group-hover:underline">
+                      View Collection &rarr;
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
 

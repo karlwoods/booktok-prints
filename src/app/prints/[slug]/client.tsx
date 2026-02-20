@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
+import { useCurrency } from "@/context/CurrencyContext";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
@@ -39,6 +40,7 @@ export function ProductDetailClient({
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const { addToCart } = useCart();
+  const { formatPrice } = useCurrency();
   const { toast } = useToast();
 
   const additionalImages = product.additionalImages || [];
@@ -118,7 +120,7 @@ export function ProductDetailClient({
   const needsTruncation = descriptionPreview !== null;
 
   return (
-    <div className="min-h-screen bg-main-light flex flex-col">
+    <div className="min-h-screen bg-main-light dark:bg-background flex flex-col">
       <Navbar />
       <div className="container mx-auto px-4 py-12 flex-1">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -214,7 +216,7 @@ export function ProductDetailClient({
                 {product.title}
               </h1>
               <p className="text-2xl font-semibold text-gray-900">
-                £{currentPrice.toFixed(2)}
+                {formatPrice(currentPrice)}
               </p>
             </div>
 
@@ -227,7 +229,7 @@ export function ProductDetailClient({
                 >
                   <span className="text-sm font-medium text-gray-700">
                     {selectedSize
-                      ? `${selectedSize} — £${currentPrice.toFixed(2)}`
+                      ? `${selectedSize} — ${formatPrice(currentPrice)}`
                       : "Select size"}
                   </span>
                   <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform ${sizeAccordionOpen ? "rotate-180" : ""}`} />
@@ -248,7 +250,7 @@ export function ProductDetailClient({
                       >
                         <span className="flex items-center justify-between w-full">
                           <span>{variation.name}</span>
-                          <span>£{variation.price.toFixed(2)}</span>
+                          <span>{formatPrice(variation.price)}</span>
                         </span>
                       </button>
                     ))}
@@ -309,7 +311,7 @@ export function ProductDetailClient({
                 className="bg-main text-white hover:bg-main/90 w-full"
                 onClick={handleAddToCart}
               >
-                Add to Cart — £{(currentPrice * quantity).toFixed(2)}
+                Add to Cart — {formatPrice(currentPrice * quantity)}
               </Button>
             </div>
           </div>

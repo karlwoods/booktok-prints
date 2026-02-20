@@ -74,7 +74,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-main-light flex flex-col">
+    <div className="min-h-screen bg-main-light dark:bg-background flex flex-col">
       <Navbar />
       <div className="container mx-auto px-4 py-12 flex-1">
         {/* Hero Section */}
@@ -82,14 +82,14 @@ export default function ContactPage() {
           <h1 className="text-4xl md:text-5xl font-bold text-main mb-4">
             Get in Touch
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             We&apos;re here to help and answer any questions you might have. We look forward to hearing from you.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
           {/* Contact Form Section */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-sm">
+          <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm rounded-2xl p-8 shadow-sm">
             <h2 className="text-2xl font-semibold text-main mb-6">Send us a Message</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
@@ -157,7 +157,7 @@ export default function ContactPage() {
           {/* Contact Information Section */}
           <div className="space-y-8">
             {/* Quick Contact */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-sm">
+            <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm rounded-2xl p-8 shadow-sm">
               <h2 className="text-2xl font-semibold text-main mb-6">Quick Contact</h2>
               <div className="space-y-4">
                 <div>
@@ -173,9 +173,9 @@ export default function ContactPage() {
             </div>
 
             {/* Company Info */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-sm">
+            <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm rounded-2xl p-8 shadow-sm">
               <h2 className="text-2xl font-semibold text-main mb-6">Company Information</h2>
-              <div className="space-y-2 text-gray-600">
+              <div className="space-y-2 text-gray-600 dark:text-gray-400">
                 <p>{siteConfig.company.legalName}</p>
                 <div>
                   <h3 className="font-semibold text-gray-800">Etsy Store</h3>

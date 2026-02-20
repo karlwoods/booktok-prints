@@ -1,11 +1,9 @@
+"use client";
+
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import Link from "next/link";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "FAQ",
-};
+import { useState } from "react";
 
 const faqs = [
   {
@@ -42,37 +40,63 @@ const faqs = [
   },
 ];
 
+function FAQItem({ faq }: { faq: { question: string; answer: string | null } }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="bg-white/80 dark:bg-card/80 backdrop-blur-sm rounded-lg shadow-sm overflow-hidden">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors"
+      >
+        <h2 className="text-lg font-semibold text-main pr-4">{faq.question}</h2>
+        <span className="text-main text-2xl font-light shrink-0 w-8 h-8 flex items-center justify-center">
+          {isOpen ? "\u2013" : "+"}
+        </span>
+      </button>
+      <div
+        className={`grid transition-all duration-300 ease-in-out ${
+          isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <div className="px-6 pb-6 text-gray-600 dark:text-gray-400">
+            {faq.answer ? (
+              <div className="space-y-3">
+                {faq.answer.split("\n").filter(p => p.trim()).map((paragraph, pIndex) => (
+                  <p key={pIndex}>{paragraph}</p>
+                ))}
+              </div>
+            ) : faq.question === "Can I return a print?" ? (
+              <p>
+                Yes! We offer hassle-free returns within 30 days of receipt. The print must be unused and in its original packaging. See our{" "}
+                <Link href="/shipping" className="text-main underline hover:text-main-dark">
+                  Shipping &amp; Returns
+                </Link>{" "}
+                page for full details.
+              </p>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function FAQPage() {
   return (
-    <div className="min-h-screen bg-main-light flex flex-col">
+    <div className="min-h-screen bg-main-light dark:bg-background flex flex-col">
       <Navbar />
       <div className="container mx-auto px-4 py-12 flex-1">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-main mb-4">Frequently Asked Questions</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Got a question? We&apos;ve got answers.
           </p>
         </div>
-        <div className="max-w-3xl mx-auto space-y-6">
+        <div className="max-w-3xl mx-auto space-y-4">
           {faqs.map((faq, index) => (
-            <div key={index} className="bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-sm">
-              <h2 className="text-lg font-semibold text-main mb-2">{faq.question}</h2>
-              {faq.answer ? (
-                <div className="text-gray-600 space-y-3">
-                  {faq.answer.split("\n").filter(p => p.trim()).map((paragraph, pIndex) => (
-                    <p key={pIndex}>{paragraph}</p>
-                  ))}
-                </div>
-              ) : faq.question === "Can I return a print?" ? (
-                <p className="text-gray-600">
-                  Yes! We offer hassle-free returns within 30 days of receipt. The print must be unused and in its original packaging. See our{" "}
-                  <Link href="/shipping" className="text-main underline hover:text-main-dark">
-                    Shipping &amp; Returns
-                  </Link>{" "}
-                  page for full details.
-                </p>
-              ) : null}
-            </div>
+            <FAQItem key={index} faq={faq} />
           ))}
         </div>
       </div>

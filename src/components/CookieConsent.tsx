@@ -29,9 +29,9 @@ export function CookieConsent() {
   if (!showBanner) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t shadow-lg">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t dark:border-gray-800 shadow-lg">
       <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p className="text-sm text-gray-600 text-center sm:text-left">
+        <p className="text-sm text-gray-600 dark:text-gray-400 text-center sm:text-left">
           We use essential cookies to make our site work. By continuing to browse, you agree to our{" "}
           <Link href="/cookies" className="text-main underline hover:text-main-dark">
             Cookie Policy

@@ -11,12 +11,12 @@ export default function ProductsError({
   reset: () => void;
 }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-main-light">
+    <div className="min-h-screen flex items-center justify-center bg-main-light dark:bg-background">
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold text-main">
           Failed to load products
         </h1>
-        <p className="text-gray-600 max-w-md mx-auto">
+        <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
           We couldn&apos;t load the products right now. Please try again.
         </p>
         <div className="flex gap-4 justify-center">

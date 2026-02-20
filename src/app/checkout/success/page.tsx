@@ -22,20 +22,20 @@ function SuccessContent() {
   }, [sessionId, clearCart]);
 
   return (
-    <div className="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm rounded-lg p-8 text-center space-y-6">
+    <div className="max-w-2xl mx-auto bg-white/80 dark:bg-card/80 backdrop-blur-sm rounded-lg p-8 text-center space-y-6">
       <div className="flex justify-center">
         <CheckCircle className="w-16 h-16 text-green-500" />
       </div>
       <h1 className="text-3xl font-bold text-main">
         Thank You for Your Order!
       </h1>
-      <p className="text-gray-600">We&apos;ve received your order.</p>
+      <p className="text-gray-600 dark:text-gray-400">We&apos;ve received your order.</p>
       <div className="space-y-4">
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-400">
           Your order number is: <br />
           <span className="font-mono text-main">{sessionId}</span>
         </p>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-400">
           If you have any questions about your order, please email us at{" "}
           <a
             href={`mailto:${siteConfig.company.supportEmail}`}
@@ -58,12 +58,12 @@ function SuccessContent() {
 
 export default function CheckoutSuccessPage() {
   return (
-    <div className="min-h-screen bg-main-light flex flex-col">
+    <div className="min-h-screen bg-main-light dark:bg-background flex flex-col">
       <Navbar />
       <div className="container mx-auto px-4 py-12 flex-1">
         <Suspense
           fallback={
-            <div className="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm rounded-lg p-8 text-center space-y-6">
+            <div className="max-w-2xl mx-auto bg-white/80 dark:bg-card/80 backdrop-blur-sm rounded-lg p-8 text-center space-y-6">
               <div className="flex justify-center">
                 <div className="w-16 h-16 rounded-full bg-gray-200 animate-pulse" />
               </div>

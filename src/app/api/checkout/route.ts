@@ -153,7 +153,7 @@ export async function POST(request: Request) {
       }),
       mode: "payment",
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL || request.headers.get('origin')}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || request.headers.get('origin')}/cart`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || request.headers.get('origin')}/checkout`,
       customer_email: payload.email,
       shipping_address_collection: {
         allowed_countries: [...siteConfig.shipping.allowedCountries],
