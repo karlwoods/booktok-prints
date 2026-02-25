@@ -73,7 +73,7 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="relative shrink-0">
             <Image
-              src={mounted && resolvedTheme === "dark" ? "/dark mode logo.png" : "/final-logo.png"}
+              src={mounted && resolvedTheme === "dark" ? "/dark-mode-logo.png" : "/final-logo.png"}
               alt={siteConfig.name}
               width={200}
               height={50}
