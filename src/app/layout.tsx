@@ -23,8 +23,8 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   icons: {
-    icon: "/favicon.png",
-    apple: "/favicon.png",
+    icon: "/updated favicon.png",
+    apple: "/updated favicon.png",
   },
 };
 

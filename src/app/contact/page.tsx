@@ -161,7 +161,7 @@ export default function ContactPage() {
               <h2 className="text-2xl font-semibold text-main mb-6">Quick Contact</h2>
               <div className="space-y-4">
                 <div>
-                  <h3 className="font-semibold text-gray-800">Email</h3>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-200">Email</h3>
                   <a
                     href={`mailto:${siteConfig.company.supportEmail}`}
                     className="text-main hover:underline"
@@ -178,7 +178,7 @@ export default function ContactPage() {
               <div className="space-y-2 text-gray-600 dark:text-gray-400">
                 <p>{siteConfig.company.legalName}</p>
                 <div>
-                  <h3 className="font-semibold text-gray-800">Etsy Store</h3>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-200">Etsy Store</h3>
                   <a
                     href="https://booktokprint.etsy.com"
                     target="_blank"

@@ -215,7 +215,7 @@ export function ProductDetailClient({
               <h1 className="text-3xl font-bold text-main mb-2">
                 {product.title}
               </h1>
-              <p className="text-2xl font-semibold text-gray-900">
+              <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
                 {formatPrice(currentPrice)}
               </p>
             </div>
@@ -225,17 +225,17 @@ export function ProductDetailClient({
               <div>
                 <button
                   onClick={() => setSizeAccordionOpen(!sizeAccordionOpen)}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-lg border border-gray-200 bg-white text-left hover:border-main transition-colors"
+                  className="w-full flex items-center justify-between px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-left hover:border-main transition-colors"
                 >
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
                     {selectedSize
                       ? `${selectedSize} — ${formatPrice(currentPrice)}`
                       : "Select size"}
                   </span>
-                  <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform ${sizeAccordionOpen ? "rotate-180" : ""}`} />
+                  <ChevronDown className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${sizeAccordionOpen ? "rotate-180" : ""}`} />
                 </button>
                 {sizeAccordionOpen && (
-                  <div className="mt-1 border border-gray-200 rounded-lg bg-white overflow-hidden shadow-sm">
+                  <div className="mt-1 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 overflow-hidden shadow-sm">
                     {product.variations!.map((variation) => (
                       <button
                         key={variation.name}
@@ -245,7 +245,7 @@ export function ProductDetailClient({
                         className={`w-full px-4 py-3 text-sm text-left border-b last:border-b-0 transition-colors ${
                           selectedSize === variation.name
                             ? "bg-main text-white"
-                            : "text-gray-700 hover:bg-main-light"
+                            : "text-gray-700 dark:text-gray-200 hover:bg-main-light dark:hover:bg-gray-700"
                         }`}
                       >
                         <span className="flex items-center justify-between w-full">
@@ -261,11 +261,11 @@ export function ProductDetailClient({
 
             {fullDescription && (
               <div className="prose max-w-none">
-                <div className="bg-white px-6 py-5 rounded-lg shadow-sm border border-gray-100">
+                <div className="bg-white dark:bg-gray-800/80 px-6 py-5 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
                   <h3 className="text-lg font-semibold text-main mb-4">
                     About This Print
                   </h3>
-                  <div className="space-y-4 text-gray-600">
+                  <div className="space-y-4 text-gray-600 dark:text-gray-300">
                     {(needsTruncation && !descriptionExpanded
                       ? descriptionPreview!
                       : fullDescription
@@ -289,14 +289,14 @@ export function ProductDetailClient({
 
             <div className="space-y-4">
               <div className="flex items-center gap-4">
-                <label htmlFor="quantity" className="text-gray-700">
+                <label htmlFor="quantity" className="text-gray-700 dark:text-gray-200">
                   Quantity:
                 </label>
                 <select
                   id="quantity"
                   value={quantity}
                   onChange={(e) => setQuantity(Number(e.target.value))}
-                  className="border rounded-md px-3 py-2"
+                  className="border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-main/20 focus:border-main hover:border-main transition-colors"
                 >
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                     <option key={num} value={num}>

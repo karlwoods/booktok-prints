@@ -202,9 +202,9 @@ export default function CheckoutPage() {
         >
           {/* Cart Items */}
           <div className="space-y-4 animate-fade-in">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Your Items</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Your Items</h2>
             {items.length === 0 ? (
-              <p className="text-center text-gray-600">Your cart is empty</p>
+              <p className="text-center text-gray-600 dark:text-gray-400">Your cart is empty</p>
             ) : (
               items.map((item) => (
                 <div
@@ -226,12 +226,12 @@ export default function CheckoutPage() {
                       </p>
                     )}
                     <div className="flex items-center gap-2">
-                      <p className="text-gray-600">
+                      <p className="text-gray-600 dark:text-gray-400">
                         {formatPrice(item.price)} each
                       </p>
                     </div>
                     <div className="flex items-center gap-2 mt-2">
-                      <div className="flex items-center border rounded-md bg-white">
+                      <div className="flex items-center border dark:border-gray-600 rounded-md bg-white dark:bg-gray-800">
                         <button
                           onClick={() =>
                             updateQuantity(
@@ -240,11 +240,11 @@ export default function CheckoutPage() {
                               item.selectedSize
                             )
                           }
-                          className="px-2 py-1 text-gray-600 hover:text-main transition-colors"
+                          className="px-2 py-1 text-gray-600 dark:text-gray-300 hover:text-main transition-colors"
                         >
                           -
                         </button>
-                        <span className="px-3 py-1 border-x text-gray-900 min-w-[2rem] text-center">
+                        <span className="px-3 py-1 border-x dark:border-gray-600 text-gray-900 dark:text-gray-100 min-w-[2rem] text-center">
                           {item.quantity}
                         </span>
                         <button
@@ -255,7 +255,7 @@ export default function CheckoutPage() {
                               item.selectedSize
                             )
                           }
-                          className="px-2 py-1 text-gray-600 hover:text-main transition-colors"
+                          className="px-2 py-1 text-gray-600 dark:text-gray-300 hover:text-main transition-colors"
                         >
                           +
                         </button>
@@ -271,7 +271,7 @@ export default function CheckoutPage() {
                         Remove
                       </Button>
                     </div>
-                    <p className="text-sm text-gray-600 mt-2">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
                       Subtotal: {formatPrice(item.price * item.quantity)}
                     </p>
                   </div>
@@ -365,7 +365,7 @@ export default function CheckoutPage() {
                   <div className="space-y-2">
                     <Label htmlFor="addressLine2">
                       Address Line 2{" "}
-                      <span className="text-gray-400 font-normal">
+                      <span className="text-gray-400 dark:text-gray-500 font-normal">
                         (optional)
                       </span>
                     </Label>
@@ -431,7 +431,7 @@ export default function CheckoutPage() {
                         onChange={(e) => setIsGift(e.target.checked)}
                         className="w-4 h-4 rounded border-gray-300 text-main focus:ring-main"
                       />
-                      <span className="text-sm font-medium text-gray-700">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
                         This is a gift
                       </span>
                     </label>
@@ -439,7 +439,7 @@ export default function CheckoutPage() {
                       <div className="space-y-2 pl-7">
                         <Label htmlFor="giftMessage">
                           Gift message{" "}
-                          <span className="text-gray-400 font-normal">
+                          <span className="text-gray-400 dark:text-gray-500 font-normal">
                             (optional)
                           </span>
                         </Label>
@@ -469,7 +469,7 @@ export default function CheckoutPage() {
                           className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${
                             shippingMethod === option.id
                               ? "border-main bg-main/5"
-                              : "border-gray-200 hover:border-gray-300"
+                              : "border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500"
                           }`}
                         >
                           <div className="flex items-center gap-3">
@@ -484,15 +484,15 @@ export default function CheckoutPage() {
                               className="w-4 h-4 text-main focus:ring-main"
                             />
                             <div>
-                              <p className="text-sm font-medium text-gray-900">
+                              <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                                 {option.name}
                               </p>
-                              <p className="text-xs text-gray-500">
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
                                 {option.days}
                               </p>
                             </div>
                           </div>
-                          <span className="text-sm font-medium text-gray-900">
+                          <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
                             {option.price === 0 ? "Free" : `+${formatPrice(option.price)}`}
                           </span>
                         </label>
@@ -501,12 +501,12 @@ export default function CheckoutPage() {
                   </div>
 
                   {/* Order Summary */}
-                  <div className="border-t pt-4 mt-4 space-y-2">
-                    <div className="flex justify-between text-sm text-gray-600">
+                  <div className="border-t dark:border-gray-600 pt-4 mt-4 space-y-2">
+                    <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                       <span>Subtotal</span>
                       <span>{formatPrice(total)}</span>
                     </div>
-                    <div className="flex justify-between text-sm text-gray-600">
+                    <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                       <span>Shipping</span>
                       <span>
                         {selectedShipping.price === 0
@@ -514,7 +514,7 @@ export default function CheckoutPage() {
                           : formatPrice(selectedShipping.price)}
                       </span>
                     </div>
-                    <div className="flex justify-between text-lg font-semibold pt-2 border-t">
+                    <div className="flex justify-between text-lg font-semibold pt-2 border-t dark:border-gray-600 text-gray-900 dark:text-gray-100">
                       <span>Total</span>
                       <span>{formatPrice(orderTotal)}</span>
                     </div>
@@ -527,7 +527,7 @@ export default function CheckoutPage() {
                   >
                     {isSubmitting ? "Processing..." : "Proceed to Payment"}
                   </Button>
-                  <p className="text-sm text-gray-500 text-center">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
                     You will be redirected to Stripe to complete your purchase
                     securely.
                   </p>

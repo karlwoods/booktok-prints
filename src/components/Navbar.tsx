@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingBag, Search, Folder, Menu, X } from "lucide-react";
+import { ShoppingBag, Search, Folder, Menu, X, Sun, Moon } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useSearch } from "@/context/SearchContext";
 import { Button } from "@/components/ui/button";
@@ -16,17 +16,24 @@ import {
 } from "@/components/ui/command";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 import { siteConfig } from "@/config/site";
 import { generateSlug } from "@/lib/products";
 import { CurrencySelector } from "@/components/CurrencySelector";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useCurrency, currencies, CurrencyCode } from "@/context/CurrencyContext";
 
 export function Navbar() {
   const { items } = useCart();
   const { searchQuery, setSearchQuery, searchResults, categoryResults, isSearching, performSearch } = useSearch();
   const [open, setOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
+  const { resolvedTheme, setTheme } = useTheme();
+  const { currency, setCurrency, currencyInfo } = useCurrency();
+
+  useEffect(() => setMounted(true), []);
   const itemCount = items.reduce((total, item) => total + item.quantity, 0);
 
   useEffect(() => {
@@ -66,7 +73,7 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="relative shrink-0">
             <Image
-              src="/booktokprint_banner_logo.jpg"
+              src={mounted && resolvedTheme === "dark" ? "/dark mode logo.png" : "/final-logo.png"}
               alt={siteConfig.name}
               width={200}
               height={50}
@@ -159,27 +166,33 @@ export function Navbar() {
       {/* Mobile Slide-out Menu */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
+          {/* Backdrop overlay */}
           <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="absolute right-0 top-0 h-full w-72 bg-white dark:bg-gray-900 shadow-xl flex flex-col animate-slide-in-right z-10">
-            <div className="flex items-center justify-between p-4 border-b dark:border-gray-800">
+          {/* Drawer panel */}
+          <div className="absolute right-0 top-0 h-full w-72 bg-white dark:bg-gray-900 shadow-2xl flex flex-col animate-slide-in-right z-10">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
               <span className="text-lg font-semibold text-main">Menu</span>
               <Button
                 variant="ghost"
                 size="icon"
+                className="text-gray-600 dark:text-gray-300 hover:text-main"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <X className="h-6 w-6" />
               </Button>
             </div>
-            <div className="flex flex-col py-4">
+
+            {/* Navigation links */}
+            <div className="flex flex-col py-2 flex-1 overflow-y-auto">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-main-light hover:text-main transition-colors text-lg"
+                  className="px-6 py-3.5 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-main active:bg-gray-200 dark:active:bg-gray-700 transition-colors text-base font-medium"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
@@ -188,12 +201,55 @@ export function Navbar() {
               {contactLink && (
                 <Link
                   href={contactLink.href}
-                  className="px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-main-light hover:text-main transition-colors text-lg border-t border-gray-100 dark:border-gray-800 mt-2 pt-5"
+                  className="px-6 py-3.5 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-main active:bg-gray-200 dark:active:bg-gray-700 transition-colors text-base font-medium border-t border-gray-200 dark:border-gray-700 mt-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {contactLink.label}
                 </Link>
               )}
+            </div>
+
+            {/* Settings section: Theme toggle + Currency */}
+            <div className="border-t border-gray-200 dark:border-gray-700 p-4 space-y-4">
+              {/* Theme toggle */}
+              {mounted && (
+                <button
+                  onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+                  className="flex items-center justify-between w-full px-3 py-3 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                    {resolvedTheme === "dark" ? "Dark Mode" : "Light Mode"}
+                  </span>
+                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white dark:bg-gray-600 shadow-sm">
+                    {resolvedTheme === "dark" ? (
+                      <Moon className="h-4 w-4 text-gray-800 dark:text-gray-200" />
+                    ) : (
+                      <Sun className="h-4 w-4 text-gray-700" />
+                    )}
+                  </span>
+                </button>
+              )}
+
+              {/* Currency selector */}
+              <div className="space-y-2">
+                <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider px-1">Currency</span>
+                <div className="grid grid-cols-2 gap-2">
+                  {Object.values(currencies).map((c) => (
+                    <button
+                      key={c.code}
+                      onClick={() => setCurrency(c.code as CurrencyCode)}
+                      className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                        currency === c.code
+                          ? "bg-main text-white"
+                          : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                      }`}
+                    >
+                      <span>{c.symbol}</span>
+                      <span>{c.code}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
